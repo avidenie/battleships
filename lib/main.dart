@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'widgets/game.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: GameApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GameApp extends StatelessWidget {
+  const GameApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -13,10 +16,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Battleships',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+        ),
         useMaterial3: true,
       ),
-      home: const Text('Hello, there!'),
+      home: const Game(),
     );
   }
 }
