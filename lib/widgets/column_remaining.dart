@@ -17,7 +17,7 @@ class ColumnRemaining extends ConsumerWidget {
 
     return ColumnClues(
       (index) => Remaining(
-        ref.watch(columnRemainingProvider(column: index)),
+        ref.watch(columnRemainingProvider(index)),
         size: tileWidth,
       ),
       boardWidth: boardWidth,

@@ -17,7 +17,7 @@ class RowRemaining extends ConsumerWidget {
 
     return RowClues(
       (index) => Remaining(
-        ref.watch(rowRemainingProvider(row: index)),
+        ref.watch(rowRemainingProvider(index)),
         size: tileWidth,
       ),
       boardWidth: boardWidth,

@@ -40,4 +40,16 @@ class TileController extends _$TileController {
         state = state.copyWith(current: TileType.none);
     }
   }
+
+  void reset() {
+    if (!state.isClue) {
+      state = state.copyWith(current: TileType.none);
+    }
+  }
+
+  void fill() {
+    if (!state.isClue && state.current == TileType.none) {
+      state = state.copyWith(current: TileType.water);
+    }
+  }
 }

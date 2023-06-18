@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/column_remaining.dart';
+import '../providers/column_sums.dart';
 import '../providers/level.dart';
 import '../providers/tile_width.dart';
 import 'column_clues.dart';
@@ -20,8 +21,13 @@ class ColumnSums extends ConsumerWidget {
     return ColumnClues(
       (index) => Sum(
         sum: level.colSums[index],
-        remaining: ref.watch(columnRemainingProvider(column: index)),
+        remaining: ref.watch(columnRemainingProvider(index)),
         size: tileWidth,
+        onTap: ref.watch(columnSumsProvider(index).notifier).canFill()
+            ? () {
+                ref.read(columnSumsProvider(index).notifier).fill();
+              }
+            : null,
       ),
       boardWidth: boardWidth,
     );

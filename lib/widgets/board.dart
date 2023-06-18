@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,16 +10,13 @@ import 'row_sums.dart';
 import 'tile.dart';
 
 class Board extends ConsumerWidget {
-  const Board({super.key});
+  const Board({super.key, required this.boardWidth});
+
+  final double boardWidth;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final level = ref.watch(levelProvider);
-
-    final boardWidth = max(
-        220.0,
-        min((MediaQuery.of(context).size.shortestSide * 0.90).floorToDouble(),
-            290.0));
     final tileWidth = ref.watch(tileWidthProvider(boardWidth));
 
     return SizedBox(

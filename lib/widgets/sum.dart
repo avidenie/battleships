@@ -6,11 +6,13 @@ class Sum extends StatelessWidget {
     required this.sum,
     required this.remaining,
     required this.size,
+    this.onTap,
   });
 
   final int sum;
   final int remaining;
   final double size;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class Sum extends StatelessWidget {
     return Material(
       child: InkWell(
         customBorder: const CircleBorder(),
-        onTap: () {},
+        onTap: onTap,
         child: Ink(
           width: size,
           height: size,

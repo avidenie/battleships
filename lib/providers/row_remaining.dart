@@ -7,7 +7,7 @@ import 'tile_controller.dart';
 part 'row_remaining.g.dart';
 
 @riverpod
-int rowRemaining(RowRemainingRef ref, {required int row}) {
+int rowRemaining(RowRemainingRef ref, int row) {
   final level = ref.watch(levelProvider);
   final existing = List.generate(
     level.size,
