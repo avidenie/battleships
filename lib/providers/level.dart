@@ -11,7 +11,8 @@ class Level extends _$Level {
   LevelData build() {
     return const LevelData(
       size: 6,
-      grid: [1],
+      board: [1],
+      revealed: [],
       rowSums: [3, 0, 2, 2, 2, 1, 3, 0, 2, 2, 2, 1, 3, 0, 2, 2, 2, 1],
       colSums: [3, 0, 4, 1, 2, 0, 3, 0, 4, 1, 2, 0, 3, 0, 4, 1, 2, 0],
     );

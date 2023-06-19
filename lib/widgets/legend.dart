@@ -1,44 +1,82 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class Legend extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/game.dart';
+import '../providers/level.dart';
+import 'ship.dart';
+
+class Legend extends ConsumerWidget {
   const Legend({super.key, required this.boardWidth});
 
   final double boardWidth;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameData = ref.watch(gameProvider);
+    final level = ref.watch(levelProvider);
+    final (maxShipSize, maxShipCount) =
+        gameData.shipSizes[level.size]?[0] ?? (0, 0);
+    final tileCount = maxShipSize + maxShipCount;
+    final tileWidth = min(40.0, boardWidth / tileCount);
+
     return SizedBox(
-      width: boardWidth,
-      child: const Column(
+      width: tileWidth * tileCount,
+      child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _Ship(type: ShipType.left, count: 1),
-              _Ship(type: ShipType.middle),
-              _Ship(type: ShipType.right),
-              _Found(found: false)
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _Ship(type: ShipType.left, count: 2),
-              _Ship(type: ShipType.right),
-              _Found(found: true),
-              _Found(found: false)
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _Ship(type: ShipType.circle, count: 3),
-              _Found(found: false),
-              _Found(found: false),
-              _Found(found: true)
-            ],
+          ...List.generate(gameData.shipSizes[level.size]?.length ?? 0,
+              (index) => gameData.shipSizes[level.size]?[index]).map(
+            (shipSize) => shipSize != null
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...List.generate(
+                          shipSize.$1,
+                          (index) => SizedBox(
+                            width: tileWidth,
+                            height: tileWidth,
+                            child: Ship(
+                              type: index == 0
+                                  ? (shipSize.$1 == 1
+                                      ? ShipType.single
+                                      : ShipType.left)
+                                  : index == shipSize.$1 - 1
+                                      ? ShipType.right
+                                      : (shipSize.$1 == 1
+                                          ? ShipType.single
+                                          : ShipType.middle),
+                              child: index == 0
+                                  ? Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        shipSize.$2.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        ),
+                        ...List.generate(
+                          shipSize.$2,
+                          (index) => _Found(
+                            found: false,
+                            size: tileWidth,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
           ),
         ],
       ),
@@ -46,75 +84,33 @@ class Legend extends StatelessWidget {
   }
 }
 
-enum ShipType { left, right, middle, circle }
-
-class _Ship extends StatelessWidget {
-  const _Ship({required this.type, this.count});
-
-  final ShipType type;
-  final int? count;
-
-  @override
-  Widget build(BuildContext context) {
-    const radius = 20.0;
-    return SizedBox(
-      width: 40.0,
-      height: 40.0,
-      child: Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: type == ShipType.left || type == ShipType.circle
-                  ? const Radius.circular(radius)
-                  : Radius.zero,
-              bottomLeft: type == ShipType.left || type == ShipType.circle
-                  ? const Radius.circular(radius)
-                  : Radius.zero,
-              topRight: type == ShipType.right || type == ShipType.circle
-                  ? const Radius.circular(radius)
-                  : Radius.zero,
-              bottomRight: type == ShipType.right || type == ShipType.circle
-                  ? const Radius.circular(radius)
-                  : Radius.zero,
-            ),
-            color: Colors.black,
-          ),
-          child: count != null && count! > 0
-              ? Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    count.toString(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                )
-              : null,
-        ),
-      ),
-    ); // Handle your onTap
-  }
-}
-
 class _Found extends StatelessWidget {
-  const _Found({required this.found});
+  const _Found({required this.found, required this.size});
 
   final bool found;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        width: 32.0,
-        height: 32.0,
+        width: size - 8.0,
+        height: size - 8.0,
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: Container(
             decoration: BoxDecoration(border: Border.all(width: 1.0)),
+            child: found
+                ? const Icon(
+                    Icons.check_rounded,
+                    size: 20.0,
+                    color: Colors.green,
+                  )
+                : null,
           ),
         ),
       ),
-    ); // Handle your onTap
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/tile_controller.dart';
 import '../models/tile_state.dart';
 import '../providers/level.dart';
+import 'ship.dart';
 
 class Tile extends ConsumerWidget {
   const Tile({super.key, required this.index});
@@ -49,9 +50,12 @@ class _TileContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final level = ref.watch(levelProvider);
     final tileState = ref.watch(tileControllerProvider(index: index));
+    if (tileState.current != TileType.ship) {
+      return const SizedBox();
+    }
 
+    final level = ref.watch(levelProvider);
     final row = (index / level.size).floor();
     final column = index % level.size;
 
@@ -75,46 +79,37 @@ class _TileContent extends ConsumerWidget {
         ? ref.watch(tileControllerProvider(index: rightIndex))
         : null;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final radius = ((constraints.maxWidth - 2) / 2).floorToDouble();
-        return Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: tileState.current == TileType.ship
-              ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: top?.current == TileType.ship ||
-                              left?.current == TileType.ship ||
-                              (bottom?.current == TileType.ship &&
-                                  right?.current == TileType.ship)
-                          ? Radius.zero
-                          : Radius.circular(radius),
-                      topRight: top?.current == TileType.ship ||
-                              right?.current == TileType.ship ||
-                              (bottom?.current == TileType.ship &&
-                                  left?.current == TileType.ship)
-                          ? Radius.zero
-                          : Radius.circular(radius),
-                      bottomLeft: bottom?.current == TileType.ship ||
-                              left?.current == TileType.ship ||
-                              (top?.current == TileType.ship &&
-                                  right?.current == TileType.ship)
-                          ? Radius.zero
-                          : Radius.circular(radius),
-                      bottomRight: bottom?.current == TileType.ship ||
-                              right?.current == TileType.ship ||
-                              (top?.current == TileType.ship &&
-                                  left?.current == TileType.ship)
-                          ? Radius.zero
-                          : Radius.circular(radius),
-                    ),
-                    color: Colors.black,
-                  ),
-                )
-              : null,
-        );
-      },
-    ); // Handle your onTap
+    if (left?.current != TileType.ship &&
+        right?.current != TileType.ship &&
+        top?.current != TileType.ship &&
+        bottom?.current != TileType.ship) {
+      return const Ship(type: ShipType.single);
+    }
+
+    if (left?.current != TileType.ship &&
+        top?.current != TileType.ship &&
+        bottom?.current != TileType.ship) {
+      return const Ship(type: ShipType.left);
+    }
+
+    if (right?.current != TileType.ship &&
+        top?.current != TileType.ship &&
+        bottom?.current != TileType.ship) {
+      return const Ship(type: ShipType.right);
+    }
+
+    if (top?.current != TileType.ship &&
+        left?.current != TileType.ship &&
+        right?.current != TileType.ship) {
+      return const Ship(type: ShipType.top);
+    }
+
+    if (bottom?.current != TileType.ship &&
+        left?.current != TileType.ship &&
+        right?.current != TileType.ship) {
+      return const Ship(type: ShipType.bottom);
+    }
+
+    return const Ship(type: ShipType.middle);
   }
 }
