@@ -1,4 +1,4 @@
-package xzy.aanblick.battleships
+package xyz.aanblick.battleships
 
 import io.flutter.embedding.android.FlutterActivity
 
