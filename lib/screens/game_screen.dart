@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/level.dart';
-import 'board.dart';
-import 'legend.dart';
+import '../routing/routes.dart';
+import '../widgets/board.dart';
+import '../widgets/legend.dart';
 
-class Game extends ConsumerWidget {
-  const Game({super.key});
+class GameScreen extends ConsumerWidget {
+  const GameScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +16,9 @@ class Game extends ConsumerWidget {
         title: const Text('Battleships'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              const HelpRoute().push(context);
+            },
             icon: const Icon(Icons.help),
           )
         ],

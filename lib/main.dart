@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import 'widgets/game.dart';
+import 'routing/routes.dart';
 
 void main() {
-  runApp(const ProviderScope(child: GameApp()));
+  runApp(ProviderScope(child: GameApp()));
 }
 
 class GameApp extends StatelessWidget {
-  const GameApp({super.key});
+  GameApp({super.key});
+
+  final _router = GoRouter(routes: $appRoutes);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Battleships',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -21,7 +24,7 @@ class GameApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Game(),
+      routerConfig: _router,
     );
   }
 }
