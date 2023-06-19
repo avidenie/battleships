@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,11 +10,6 @@ class Game extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final boardWidth = max(
-        220.0,
-        min((MediaQuery.of(context).size.shortestSide * 0.8).floorToDouble(),
-            470.0));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Battleships'),
@@ -27,37 +20,107 @@ class Game extends ConsumerWidget {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Board(boardWidth: boardWidth),
-          ),
-          const SizedBox(height: 16.0),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Legend(boardWidth: boardWidth),
-          ),
-          const SizedBox(height: 32.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.ad_units_outlined),
-                label: const Text('Show mistakes'),
-              ),
-              const SizedBox(width: 8.0),
-              ElevatedButton(
-                onPressed: () {
-                  ref.read(levelProvider.notifier).reset();
-                },
-                child: const Text('Reset'),
-              ),
-            ],
-          ),
-        ],
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isPortrait = constraints.maxWidth < constraints.maxHeight;
+            final boardWidth =
+                (isPortrait ? constraints.maxWidth : constraints.maxHeight) -
+                    80.0;
+            if (isPortrait) {
+              return Column(
+                children: [
+                  const SizedBox(height: 8.0),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Board(boardWidth: boardWidth),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        const SizedBox(height: 16.0),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Legend(boardWidth: boardWidth),
+                        ),
+                        const SizedBox(height: 32.0),
+                        const _Buttons()
+                      ],
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Board(boardWidth: boardWidth),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // const SizedBox(height: 20.0),
+                        Legend(boardWidth: boardWidth),
+                        const SizedBox(height: 8.0),
+                        const _Buttons()
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }
+          },
+        ),
       ),
+    );
+  }
+}
+
+class _Buttons extends StatelessWidget {
+  const _Buttons();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _ShowMistakesButton(),
+        SizedBox(width: 8.0),
+        _ResetButton(),
+      ],
+    );
+  }
+}
+
+class _ShowMistakesButton extends StatelessWidget {
+  const _ShowMistakesButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {},
+      icon: const Icon(Icons.ad_units_outlined),
+      label: const Text('Show mistakes'),
+    );
+  }
+}
+
+class _ResetButton extends ConsumerWidget {
+  const _ResetButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      onPressed: () {
+        ref.read(levelProvider.notifier).reset();
+      },
+      child: const Text('Reset'),
     );
   }
 }

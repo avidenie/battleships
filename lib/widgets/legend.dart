@@ -19,7 +19,13 @@ class Legend extends ConsumerWidget {
     final (maxShipSize, maxShipCount) =
         gameData.shipSizes[level.size]?[0] ?? (0, 0);
     final tileCount = maxShipSize + maxShipCount;
-    final tileWidth = min(40.0, boardWidth / tileCount);
+    final minWidth = switch (level.size) {
+      15 => 30.0,
+      12 => 30.0,
+      10 => 30.0,
+      _ => 40.0,
+    };
+    final tileWidth = min(minWidth, boardWidth / tileCount);
 
     return SizedBox(
       width: tileWidth * tileCount,

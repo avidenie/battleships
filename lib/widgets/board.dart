@@ -22,6 +22,7 @@ class Board extends ConsumerWidget {
     return SizedBox(
       width: boardWidth + 2 * tileWidth,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           ColumnSums(boardWidth: boardWidth),
           Row(
