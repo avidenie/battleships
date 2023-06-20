@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +13,7 @@ class GameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final level = ref.watch(levelProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Battleships'),
@@ -27,9 +30,16 @@ class GameScreen extends ConsumerWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isPortrait = constraints.maxWidth < constraints.maxHeight;
-            final boardWidth =
+            final boardWidth = min(
+                switch (level.size) {
+                  15 => 675.0,
+                  12 => 600.0,
+                  10 => 500.0,
+                  8 => 400.0,
+                  _ => 360.0,
+                },
                 (isPortrait ? constraints.maxWidth : constraints.maxHeight) -
-                    80.0;
+                    80.0);
             if (isPortrait) {
               return Column(
                 children: [
@@ -57,14 +67,14 @@ class GameScreen extends ConsumerWidget {
               return Row(
                 children: [
                   Flexible(
-                    flex: 1,
+                    flex: 7,
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Board(boardWidth: boardWidth),
                     ),
                   ),
                   Flexible(
-                    flex: 1,
+                    flex: 5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
