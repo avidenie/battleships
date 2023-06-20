@@ -24,13 +24,10 @@ class Tile extends ConsumerWidget {
               splashFactory: tileState.current == TileType.none
                   ? InkSplash.splashFactory
                   : NoSplash.splashFactory,
-              splashColor: Colors.lightBlue,
+              splashColor:
+                  tileState.current == TileType.none ? Colors.lightBlue : null,
               onTap: () {
-                Future.delayed(const Duration(milliseconds: 50), () {
-                  ref
-                      .read(tileControllerProvider(index: index).notifier)
-                      .onTap();
-                });
+                ref.read(tileControllerProvider(index: index).notifier).onTap();
               },
               onLongPress: () {
                 ref

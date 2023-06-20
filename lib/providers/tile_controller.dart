@@ -41,6 +41,20 @@ class TileController extends _$TileController {
     }
   }
 
+  void onDrag() {
+    if (state.isClue) {
+      return;
+    }
+
+    switch (state.current) {
+      case TileType.none:
+        state = state.copyWith(current: TileType.water);
+      case TileType.water:
+        state = state.copyWith(current: TileType.ship);
+      case TileType.ship:
+    }
+  }
+
   void reset() {
     if (!state.isClue) {
       state = state.copyWith(current: TileType.none);
