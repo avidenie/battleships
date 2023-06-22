@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/choose_screen.dart';
+import '../screens/level_selector_screen.dart';
 import '../screens/help_screen.dart';
 import '../screens/main_menu_screen.dart';
 import '../screens/game_screen.dart';
@@ -39,7 +39,7 @@ class ChooseRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const ChooseScreen();
+      const LevelSelectorScreen();
 }
 
 class GameRoute extends GoRouteData {

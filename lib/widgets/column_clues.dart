@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/level.dart';
+import '../providers/level_settings.dart';
 import '../providers/tile_width.dart';
 
 class ColumnClues extends ConsumerWidget {
@@ -12,7 +12,7 @@ class ColumnClues extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final level = ref.watch(levelProvider);
+    final levelSettings = ref.watch(levelSettingsProvider);
     final tileWidth = ref.watch(tileWidthProvider(boardWidth));
 
     return Row(
@@ -26,7 +26,7 @@ class ColumnClues extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(
-                level.size,
+                levelSettings.size,
                 generator,
               ),
             ),

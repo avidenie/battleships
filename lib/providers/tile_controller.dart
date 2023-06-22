@@ -1,18 +1,30 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/tile_state.dart';
+import '../models/tile_model.dart';
+import 'level.dart';
 
 part 'tile_controller.g.dart';
 
 @riverpod
 class TileController extends _$TileController {
   @override
-  TileState build({required int index}) {
-    return const TileState(initial: TileType.none, isClue: false);
+  TileModel build({required int index}) {
+    final level = ref.watch(levelProvider);
+    final revealed = level.revealed.contains(index);
+    final initial = level.board.contains(index)
+        ? TileType.ship
+        : revealed
+            ? TileType.water
+            : TileType.none;
+    return TileModel(
+      initial: initial,
+      revealed: revealed,
+      current: revealed ? initial : TileType.none,
+    );
   }
 
   void onTap() {
-    if (state.isClue) {
+    if (state.revealed) {
       return;
     }
 
@@ -27,7 +39,7 @@ class TileController extends _$TileController {
   }
 
   void onLongPress() {
-    if (state.isClue) {
+    if (state.revealed) {
       return;
     }
 
@@ -42,7 +54,7 @@ class TileController extends _$TileController {
   }
 
   void onDrag() {
-    if (state.isClue) {
+    if (state.revealed) {
       return;
     }
 
@@ -55,14 +67,8 @@ class TileController extends _$TileController {
     }
   }
 
-  void reset() {
-    if (!state.isClue) {
-      state = state.copyWith(current: TileType.none);
-    }
-  }
-
   void fill() {
-    if (!state.isClue && state.current == TileType.none) {
+    if (!state.revealed && state.current == TileType.none) {
       state = state.copyWith(current: TileType.water);
     }
   }

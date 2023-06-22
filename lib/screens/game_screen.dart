@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/level.dart';
+import '../providers/level_settings.dart';
 import '../routing/routes.dart';
 import '../widgets/board.dart';
 import '../widgets/legend.dart';
@@ -13,7 +14,7 @@ class GameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final level = ref.watch(levelProvider);
+    final levelSettings = ref.watch(levelSettingsProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Battleships'),
@@ -31,7 +32,7 @@ class GameScreen extends ConsumerWidget {
           builder: (context, constraints) {
             final isPortrait = constraints.maxWidth < constraints.maxHeight;
             final boardWidth = min(
-                switch (level.size) {
+                switch (levelSettings.size) {
                   15 => 675.0,
                   12 => 600.0,
                   10 => 500.0,

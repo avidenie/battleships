@@ -1,14 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'level_data.freezed.dart';
+part 'level_model.freezed.dart';
 
 @freezed
-class LevelData with _$LevelData {
-  const factory LevelData({
-    required int size,
+class LevelModel with _$LevelModel {
+  const factory LevelModel({
     required List<int> board,
     required List<int> revealed,
     required List<int> rowSums,
     required List<int> colSums,
-  }) = _LevelData;
+  }) = _LevelModel;
 }

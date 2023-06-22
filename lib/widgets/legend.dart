@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/game.dart';
-import '../providers/level.dart';
+import '../models/ship_type.dart';
+import '../providers/level_settings.dart';
 import 'ship.dart';
 
 class Legend extends ConsumerWidget {
@@ -14,12 +14,11 @@ class Legend extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameData = ref.watch(gameProvider);
-    final level = ref.watch(levelProvider);
+    final levelSettings = ref.watch(levelSettingsProvider);
     final (maxShipSize, maxShipCount) =
-        gameData.shipSizes[level.size]?[0] ?? (0, 0);
+        LevelSettings.shipSizes[levelSettings.size]?[0] ?? (0, 0);
     final tileCount = maxShipSize + maxShipCount;
-    final minWidth = switch (level.size) {
+    final minWidth = switch (levelSettings.size) {
       15 => 30.0,
       12 => 30.0,
       10 => 30.0,
@@ -31,8 +30,10 @@ class Legend extends ConsumerWidget {
       width: tileWidth * tileCount,
       child: Column(
         children: [
-          ...List.generate(gameData.shipSizes[level.size]?.length ?? 0,
-              (index) => gameData.shipSizes[level.size]?[index]).map(
+          ...List.generate(
+              LevelSettings.shipSizes[levelSettings.size]?.length ?? 0,
+              (index) =>
+                  LevelSettings.shipSizes[levelSettings.size]?[index]).map(
             (shipSize) => shipSize != null
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 4.0),

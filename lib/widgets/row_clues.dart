@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/level.dart';
+import '../providers/level_settings.dart';
 
 class RowClues extends ConsumerWidget {
   const RowClues(this.generator, {super.key, required this.boardWidth});
@@ -11,7 +11,7 @@ class RowClues extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final level = ref.watch(levelProvider);
+    final levelSettings = ref.watch(levelSettingsProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -20,7 +20,7 @@ class RowClues extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: List.generate(level.size, generator),
+          children: List.generate(levelSettings.size, generator),
         ),
       ),
     );

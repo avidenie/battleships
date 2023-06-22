@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'column_remaining.dart';
-import 'level.dart';
+import 'level_settings.dart';
 import 'tile_controller.dart';
 
 part 'column_sums.g.dart';
@@ -18,7 +18,7 @@ class ColumnSums extends _$ColumnSums {
   void fill() {
     final remaining = ref.read(columnRemainingProvider(column));
     if (remaining == 0) {
-      final size = ref.read(levelProvider).size;
+      final size = ref.read(levelSettingsProvider).size;
       final tiles = List.generate(
         size,
         (index) => index * size + column,

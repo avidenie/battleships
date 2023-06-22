@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'level.dart';
+import 'level_settings.dart';
 import 'row_remaining.dart';
 import 'tile_controller.dart';
 
@@ -18,7 +18,7 @@ class RowSums extends _$RowSums {
   void fill() {
     final remaining = ref.read(rowRemainingProvider(row));
     if (remaining == 0) {
-      final size = ref.read(levelProvider).size;
+      final size = ref.read(levelSettingsProvider).size;
       final tiles = List.generate(
         size,
         (index) => row * size + index,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/level.dart';
+import '../providers/level_settings.dart';
 import '../providers/tile_controller.dart';
 import '../providers/tile_width.dart';
 import 'column_remaining.dart';
@@ -28,7 +28,7 @@ class _BoardState extends ConsumerState<Board> {
 
   @override
   Widget build(BuildContext context) {
-    final level = ref.watch(levelProvider);
+    final levelSettings = ref.watch(levelSettingsProvider);
     final tileWidth = ref.watch(tileWidthProvider(widget.boardWidth));
 
     return SizedBox(
@@ -55,8 +55,9 @@ class _BoardState extends ConsumerState<Board> {
                       padding: const EdgeInsets.all(4.0),
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1,
-                      crossAxisCount: level.size,
-                      children: List.generate(level.size * level.size, (index) {
+                      crossAxisCount: levelSettings.size,
+                      children: List.generate(
+                          levelSettings.size * levelSettings.size, (index) {
                         return SelectableTile(
                           index: index,
                           child: Tile(index: index),

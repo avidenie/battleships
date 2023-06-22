@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ShipType { left, right, top, bottom, middle, single }
+import '../models/ship_type.dart';
 
 class Ship extends StatelessWidget {
   const Ship({super.key, required this.type, this.child});
