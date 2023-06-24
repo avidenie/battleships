@@ -53,8 +53,8 @@ class _BoardState extends ConsumerState<Board> {
                       key: key,
                       primary: false,
                       padding: const EdgeInsets.all(4.0),
-                      crossAxisSpacing: 1,
-                      mainAxisSpacing: 1,
+                      crossAxisSpacing: levelSettings.size == 15 ? 0.5 : 1,
+                      mainAxisSpacing: levelSettings.size == 15 ? 0.5 : 1,
                       crossAxisCount: levelSettings.size,
                       children: List.generate(
                           levelSettings.size * levelSettings.size, (index) {
