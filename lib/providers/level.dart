@@ -16,12 +16,55 @@ class Level extends _$Level {
   }
 
   LevelModel _generate(int size, Difficulty difficulty) {
-    return const LevelModel(
-      board: [0, 1, 2, 14, 20, 26],
-      revealed: [1, 3, 14, 26],
-      rowSums: [3, 0, 2, 2, 2, 1, 3, 0, 2, 2, 2, 1, 3, 0, 2, 2, 2, 1],
-      colSums: [3, 0, 4, 1, 2, 0, 3, 0, 4, 1, 2, 0, 3, 0, 4, 1, 2, 0],
-    );
+    return switch (size) {
+      6 => const LevelModel(
+          board: [6, 9, 10, 12, 18, 22, 23, 30, 32, 35],
+          revealed: [10, 35],
+          rowSums: [0, 3, 1, 3, 0, 3],
+          colSums: [4, 0, 1, 1, 2, 2],
+        ),
+      _ => const LevelModel(
+          board: [
+            12,
+            31,
+            46,
+            51,
+            52,
+            53,
+            57,
+            58,
+            61,
+            70,
+            76,
+            80,
+            81,
+            85,
+            112,
+            113,
+            114,
+            115,
+            116,
+            122,
+            123,
+            124,
+            125,
+            133,
+            142,
+            153,
+            161,
+            165,
+            168,
+            180,
+            183,
+            193,
+            195,
+            208
+          ],
+          revealed: [31, 57, 81, 114, 124, 133, 161, 168],
+          rowSums: [1, 0, 1, 6, 2, 4, 0, 5, 5, 1, 2, 2, 3, 2, 0],
+          colSums: [3, 4, 1, 4, 1, 2, 2, 3, 2, 1, 3, 2, 2, 4, 0],
+        ),
+    };
   }
 
   void reset() {
